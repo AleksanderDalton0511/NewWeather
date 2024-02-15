@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "Weather",
+    "slug": "Weather",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "thumbnail_Sunny.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "thumbnail_Sunny.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "thumbnail_Sunny.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.aleksanderdalton0511.Weather",
+      "versionCode": 6
+    },
+    "web": {
+      "favicon": "thumbnail_Sunny.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ea5fff16-d1bc-4adf-8ebf-352894abb619"
+      }
+    }
+  }
+}

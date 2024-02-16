@@ -2,7 +2,7 @@ import { BackHandler } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import * as NavigationBar from "expo-navigation-bar";
 import * as Location from 'expo-location';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, PermissionsAndroid, Image } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'react-native-paper';
 
@@ -44,20 +44,13 @@ NavigationBar.setBehaviorAsync("overlay-swipe");
     const response = await fetch(url, options);
     const result = await response.json();
     setResults(result);
-    setSelected(true);
-    setSafer(false);
+    console.log(result.location.name);
   } catch (error) {
     console.error(error);
   }
   }
-  function show(){
-    request();
-    setSelected(true);
-  }
-
+  
     const [usePosition, setLocation] = useState(null);
-
-    const [trigger, setTrigger] = useState(false);
 
     async function MyLocation() {
       
@@ -66,13 +59,14 @@ NavigationBar.setBehaviorAsync("overlay-swipe");
         setErrorMsg('Permission to access location was denied');
         return;
       }
-      setSafer(true);
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      setTrigger(true);
+      console.log(location);
     };
+    MyLocation();
+    request2();
 
-    function handleBackButtonClick() {
+    /*function handleBackButtonClick() {
       setSelectedFalse();
       return true;
     }
@@ -141,126 +135,8 @@ NavigationBar.setBehaviorAsync("overlay-swipe");
 
       
     </DataTable>
-      }
-      else{
-        data = <DataTable style={{marginTop: "5%", backgroundColor: "#7B858D"}}>
-
-        <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>00:00</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].hour[0].temp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[0].hour[0].condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-      <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>03:00</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].hour[3].temp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[0].hour[3].condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-      <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>06:00</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].hour[6].temp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[0].hour[6].condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-      <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>09:00</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].hour[9].temp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[0].hour[9].condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-      <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>12:00</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].hour[12].temp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[0].hour[12].condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-      <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>15:00</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].hour[15].temp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[0].hour[15].condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-      <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>18:00</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].hour[18].temp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[0].hour[18].condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-      <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>21:00</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].hour[21].temp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[0].hour[21].condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-      <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>23:00</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].hour[23].temp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[0].hour[23].condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-    </DataTable>
-      }
-    return (
-      <View style={styles.container}>
-        <TouchableOpacity onPress={setSelectedFalse} style={{paddingTop: "1%", marginRight: "85%", marginTop: "5%"}}><Image style={{width: 40, height: 40}} source={require('./back.png')} /></TouchableOpacity>
-
-        <DataTable>
-
-        <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>INFO</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{locat}</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.location.localtime}</Text></DataTable.Cell>
-      </DataTable.Row>
-
-        <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>NOW</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.current.temp_c} C</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.current.condition.text}</Text></DataTable.Cell>
-      </DataTable.Row>
-
-        <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>DAYTIME</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].astro.sunrise}</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].astro.sunset}</Text></DataTable.Cell>
-      </DataTable.Row>
-
-    </DataTable>
-
-      <TouchableOpacity onPress={(prevCheck) => setDaily(prevCheck => !prevCheck)} style={{backgroundColor: "darkgrey", paddingRight: "5%", paddingLeft: "5%", paddingTop: "1%", paddingBottom: "1%", marginTop: `${ margin }`}}><Text style={{color: "red"}}>{word}</Text></TouchableOpacity>
-
-    {data}
-    <StatusBar hidden />
-      </View>
-    )}
-    catch (error) {
-      return (
-        <View style={styles.container}>
-          <Text style={{color: 'white'}}>CHOOSE YOUR CITY:</Text>
-          <TextInput onSubmitEditing = {() => show()} onChangeText={newText => setCity(newText)} style={{backgroundColor: 'darkgrey', width: "40%", marginTop: "3%", textAlign:"center", color: "red"}}></TextInput>
-          <Text style={{color: "red"}}>Such city does not exist!</Text>
-          <TouchableOpacity style={{marginTop: "2%", backgroundColor: "#7B858D"}} onPress={MyLocation}><Text style={{margin: "2%", color: "red"}}>MY POSITION</Text></TouchableOpacity>
-          <StatusBar hidden />
-        </View>
-      );
-    }
-  }
-  else{
-    return (
-      <View style={styles.container}>
-        <Text style={{color: 'white'}}>CHOOSE YOUR CITY:</Text>
-        <TextInput onSubmitEditing = {() => show()} onChangeText={newText => setCity(newText)} style={{backgroundColor: 'darkgrey', width: "40%", marginTop: "3%", textAlign:"center", color: "red"}}></TextInput>
-        <TouchableOpacity style={{marginTop: "6%", backgroundColor: "#7B858D"}} onPress={MyLocation}><Text style={{margin: "2%", color: "red"}}>MY POSITION</Text></TouchableOpacity>
-        <StatusBar hidden />
-      </View>
-    );
-  }
+      */
+  return(
+    <View><Text>results.location.name</Text></View>
+  )
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'grey',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

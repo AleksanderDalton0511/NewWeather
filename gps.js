@@ -5,11 +5,10 @@ import * as Location from 'expo-location';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'react-native-paper';
+import { ScrollView } from "react-native-web";
 
 export default function Gps() {
   
-  const [results, setResults] = useState("");
-  const [usePosition, setLocation] = useState("");
   /*const[city, setCity] = useState('');
   let margin = "20%";
 const request = async () => {const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + city + '&days=3';
@@ -30,6 +29,14 @@ try {
 
 /*NavigationBar.setVisibilityAsync("hidden");
 NavigationBar.setBehaviorAsync("overlay-swipe");*/
+
+  const [results, setResults] = useState("");
+  const [results2, setResults2] = useState("");
+  const [condition, setCondition] = useState("");
+  const [current, setCurrent] = useState("");
+  const [city, setCity] = useState("");
+
+  const [usePosition, setLocation] = useState("");
 
 useEffect(() => {
   (async () => {
@@ -58,6 +65,10 @@ async function req() {
       const response = await fetch(url, options);
       const result = await response.json();
       setResults(result.forecast.forecastday[0].day.mintemp_c);
+      setResults2(result.forecast.forecastday[0].day.maxtemp_c);
+      setCondition(result.current.condition);
+      setCurrent(result.current);
+      setCity(result.location.name);
       console.log(result);
       setRead(true);
   }
@@ -134,8 +145,31 @@ async function req() {
         
     </DataTable>
       */
-
   return(
-    <View><Text>{results}</Text></View>
+    <View>
+
+      <DataTable>
+
+      <DataTable.Row style={{borderBottomWidth: 0, marginTop: "10%"}}> 
+        <DataTable.Cell><Text>{city}</Text></DataTable.Cell> 
+      </DataTable.Row>
+
+      <DataTable.Row style={{borderBottomWidth: 0, marginTop: "10%"}}> 
+        <DataTable.Cell><Text>{current.temp_c}°</Text></DataTable.Cell> 
+      </DataTable.Row>
+      
+      <DataTable.Row style={{borderBottomWidth: 0, marginTop: "10%"}}> 
+        <DataTable.Cell><Text>{condition.text}</Text></DataTable.Cell> 
+        <DataTable.Cell><Image source = {{uri:'https:' + condition.icon, width: 45, height: 45}}/></DataTable.Cell> 
+      </DataTable.Row>
+
+      <DataTable.Row style={{borderBottomWidth: 0, marginTop: "10%"}}> 
+        <DataTable.Cell><Text>max today:{results2}</Text></DataTable.Cell> 
+        <DataTable.Cell><Text>min today:{results}</Text></DataTable.Cell> 
+      </DataTable.Row>
+
+      </DataTable> 
+
+      </View>
   )
 }

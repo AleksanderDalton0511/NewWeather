@@ -8,9 +8,9 @@ import { DataTable } from 'react-native-paper';
 
 export default function Gps() {
   
-  const[results, setResults] = useState([]);
-  const[city, setCity] = useState('');
-  const[isDaily, setDaily] = useState(false);
+  const [results, setResults] = useState("");
+  const [usePosition, setLocation] = useState("");
+  /*const[city, setCity] = useState('');
   let margin = "20%";
 const request = async () => {const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + city + '&days=3';
 const options = {
@@ -25,46 +25,44 @@ try {
 	const result = await response.json();
   setResults(result);
 } catch (error) {
-	console.error(error);
 }
-}
+}*/
 
-NavigationBar.setVisibilityAsync("hidden");
-NavigationBar.setBehaviorAsync("overlay-swipe");
+/*NavigationBar.setVisibilityAsync("hidden");
+NavigationBar.setBehaviorAsync("overlay-swipe");*/
 
-  const request2 = async () => {const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + usePosition.coords.latitude+","+usePosition.coords.longitude + '&days=3';
-  const options = {
-    method: 'GET',
-    headers: {
-      'X-RapidAPI-Key': '3c9510ca70mshf8fe7463f988101p197cb5jsn5804d7f8fa69',
-      'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
-    }
-  };
-  try {
-    const response = await fetch(url, options);
-    const result = await response.json();
-    setResults(result);
-    console.log(result.location.name);
-  } catch (error) {
-    console.error(error);
-  }
-  }
-  
-    const [usePosition, setLocation] = useState(null);
-
-    async function MyLocation() {
-      
-      let { status } = await Location.requestForegroundPermissionsAsync();
+useEffect(() => {
+  (async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      console.log(location);
+  })();
+}, []);
+
+  const [read, setRead] = useState(false);
+
+async function req() {
+  if(read!=true){
+    const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + usePosition.coords.latitude+","+usePosition.coords.longitude + '&days=3';
+      const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': '3c9510ca70mshf8fe7463f988101p197cb5jsn5804d7f8fa69',
+        'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
+      }
     };
-    MyLocation();
-    request2();
+      const response = await fetch(url, options);
+      const result = await response.json();
+      setResults(result.forecast.forecastday[0].day.mintemp_c);
+      console.log(result);
+      setRead(true);
+  }
+  }
+  req();
 
     /*function handleBackButtonClick() {
       setSelectedFalse();
@@ -133,10 +131,11 @@ NavigationBar.setBehaviorAsync("overlay-swipe");
         <Image source = {{uri:'https:' + results.forecast.forecastday[2].day.condition.icon, width: 45, height: 45}}/>
       </DataTable.Row>
 
-      
+        
     </DataTable>
       */
+
   return(
-    <View><Text>results.location.name</Text></View>
+    <View><Text>{results}</Text></View>
   )
 }

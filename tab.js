@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { DataTable } from 'react-native-paper';
 import { ScrollView } from "react-native-web";
 
-export default function Gps() {
+export default function Tab() {
   
   /*const[city, setCity] = useState('');
   let margin = "20%";
@@ -35,20 +35,6 @@ NavigationBar.setBehaviorAsync("overlay-swipe");*/
   const [condition, setCondition] = useState("");
   const [current, setCurrent] = useState("");
   const [city, setCity] = useState("");
-
-  const [usePosition, setLocation] = useState("");
-
-useEffect(() => {
-  (async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-  })();
-}, []);
 
   const [read, setRead] = useState(false);
 

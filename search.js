@@ -32,7 +32,7 @@ export default function Search() {
       })
       .then(ret => {
         console.log(ret.Name.oldList);
-        oldList.push(ret.Name.oldList);
+        setOldList(ret.Name.oldList);
       })
 
       .catch(err => {

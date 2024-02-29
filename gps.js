@@ -5,7 +5,10 @@ import * as Location from 'expo-location';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'react-native-paper';
-import { ScrollView } from "react-native-web";
+import { FlatList, ScrollView } from "react-native-web";
+import Storage from 'react-native-storage';
+import AsyncStorage from '@react-native-community/async-storage';
+import { storage } from "./components/storage";
 
 export default function Gps() {
   
@@ -26,9 +29,6 @@ try {
 } catch (error) {
 }
 }*/
-
-/*NavigationBar.setVisibilityAsync("hidden");
-NavigationBar.setBehaviorAsync("overlay-swipe");*/
 
   const [results, setResults] = useState("");
   const [results2, setResults2] = useState("");
@@ -69,103 +69,76 @@ async function req() {
       setCondition(result.current.condition);
       setCurrent(result.current);
       setCity(result.location.name);
-      console.log(result);
       setRead(true);
   }
   }
   req();
 
-    /*function handleBackButtonClick() {
-      setSelectedFalse();
-      return true;
-    }
-    
-    useEffect(() => {
-      BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
-      return () => {
-        BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
-      };
-    }, []);
-
-  const [selected, setSelected] = useState(false);
-  const [safer, setSafer] = useState(true);
+  const [visualList, setVisualList] = useState();
 
   useEffect(() => {
-    (async () => {
-      if(safer){
-      request2();
-      }
-      else{
-        setSelected(false);
-        setDaily(false);
-      }
-    })();
-  }, [trigger]);
+    storage
+      .load({
+        key: 'city',
+        autsoSync: true,
+        syncInBackground: true,
+        syncParams: {
+          extraFetchOptions: {
+            // blahblah
+          },
+          someFlag: true
+        }
+      })
+      .then(ret => {
+        setVisualList(ret.Name.oldList.map(person => ({ location: person })));
+      })
 
-  let word;
-  if (selected){
-    if (isDaily){
-      word = "TODAY";
-      margin = "90%";
-      }
-      else{
-        word = "DAILY";
-      }
-    try{
-      const locat = <Text style={{color: "red"}}>{results.location.name}</Text>
+      .catch(err => {
+        switch (err.name) {
+          case 'NotFoundError':
+            break;
+          case 'ExpiredError':
+            break;
+        }
+      });
+    
+    }, []);
 
-      function setSelectedFalse(){
-        setSelected(false);
-        setDaily(false);
-        setTrigger(false);
-      }
-
-      let data;
-      if(isDaily){
-        data = <DataTable style={{marginTop: "5%", backgroundColor: "#7B858D"}}>
-
-        <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>TODAY</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].day.avgtemp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[0].day.condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-      <DataTable.Row>
-      <DataTable.Cell><Text style={{color: "white"}}>TOMORROW</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[1].day.avgtemp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[1].day.condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-      <DataTable.Row>
-      <DataTable.Cell><Text style={{color: "white"}}>AFTERTOMORROW</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[2].day.avgtemp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[2].day.condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-        
-    </DataTable>
-      */
   return(
     <View>
 
       <DataTable>
 
-      <DataTable.Row style={{borderBottomWidth: 0, marginTop: "10%"}}> 
+      <DataTable.Row> 
         <DataTable.Cell><Text>{city}</Text></DataTable.Cell> 
       </DataTable.Row>
 
-      <DataTable.Row style={{borderBottomWidth: 0, marginTop: "10%"}}> 
+      <DataTable.Row> 
         <DataTable.Cell><Text>{current.temp_c}°</Text></DataTable.Cell> 
       </DataTable.Row>
       
-      <DataTable.Row style={{borderBottomWidth: 0, marginTop: "10%"}}> 
+      <DataTable.Row> 
         <DataTable.Cell><Text>{condition.text}</Text></DataTable.Cell> 
         <DataTable.Cell><Image source = {{uri:'https:' + condition.icon, width: 45, height: 45}}/></DataTable.Cell> 
       </DataTable.Row>
 
-      <DataTable.Row style={{borderBottomWidth: 0, marginTop: "10%"}}> 
+      <DataTable.Row> 
         <DataTable.Cell><Text>MAX: {results2}</Text></DataTable.Cell> 
         <DataTable.Cell><Text>MIN: {results}</Text></DataTable.Cell> 
+      </DataTable.Row>
+
+      <DataTable.Row> 
+      <FlatList 
+         data={visualList}
+         renderItem={({item}) => <TouchableOpacity onPress={() => storage.save({
+          key: 'tab', // Note: Do not use underscore("_") in key!
+          data: {
+            Name: {item},
+          },
+          expires: null
+        })}><Text>{item.location}</Text></TouchableOpacity> }
+         keyExtractor={(item) => item}
+      />
       </DataTable.Row>
 
       </DataTable> 

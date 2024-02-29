@@ -22,8 +22,8 @@ export default function App() {
     <Stack.Navigator screenOptions={{
       headerShown: false
     }}>
-                <Stack.Screen name="Search" component={Search}/>
                 <Stack.Screen name="Gps" component={Gps}/>
+                <Stack.Screen name="Search" component={Search}/>
                 <Stack.Screen name="Tab" component={Tab}/>
             </Stack.Navigator>
             <StatusBar hidden />

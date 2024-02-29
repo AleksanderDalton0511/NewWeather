@@ -55,7 +55,6 @@ async function req() {
       setCondition(result.current.condition);
       setCurrent(result.current);
       setCity(result.location.name);
-      console.log(result);
       setRead(true);
   }
   }

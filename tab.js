@@ -9,27 +9,6 @@ import { ScrollView } from "react-native-web";
 import { storage } from "./components/storage";
 
 export default function Tab() {
-  
-  /*const[city, setCity] = useState('');
-  let margin = "20%";
-const request = async () => {const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + city + '&days=3';
-const options = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': '3c9510ca70mshf8fe7463f988101p197cb5jsn5804d7f8fa69',
-		'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
-	}
-};
-try {
-	const response = await fetch(url, options);
-	const result = await response.json();
-  setResults(result);
-} catch (error) {
-}
-}*/
-
-/*NavigationBar.setVisibilityAsync("hidden");
-NavigationBar.setBehaviorAsync("overlay-swipe");*/
 
   const [results, setResults] = useState("");
   const [results2, setResults2] = useState("");
@@ -37,29 +16,7 @@ NavigationBar.setBehaviorAsync("overlay-swipe");*/
   const [current, setCurrent] = useState("");
   const [city, setCity] = useState("");
 
-  const [read, setRead] = useState(false);
-
-/*async function req() {
-  if(read!=true){
-    const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + usePosition.coords.latitude+","+usePosition.coords.longitude + '&days=3';
-      const options = {
-      method: 'GET',
-      headers: {
-        'X-RapidAPI-Key': '3c9510ca70mshf8fe7463f988101p197cb5jsn5804d7f8fa69',
-        'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
-      }
-    };
-      const response = await fetch(url, options);
-      const result = await response.json();
-      setResults(result.forecast.forecastday[0].day.mintemp_c);
-      setResults2(result.forecast.forecastday[0].day.maxtemp_c);
-      setCondition(result.current.condition);
-      setCurrent(result.current);
-      setCity(result.location.name);
-      setRead(true);
-  }
-  }
-  req();*/
+  const [loc, setLoc] = useState("");
 
   useEffect(() => {
     storage
@@ -75,7 +32,7 @@ NavigationBar.setBehaviorAsync("overlay-swipe");*/
         }
       })
       .then(ret => {
-        console.log(ret);
+        setLoc(ret.Name.ready.location);
       })
 
       .catch(err => {
@@ -88,6 +45,28 @@ NavigationBar.setBehaviorAsync("overlay-swipe");*/
       });
     
     }, []);
+
+const request = async () => {const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + loc + '&days=3';
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': '3c9510ca70mshf8fe7463f988101p197cb5jsn5804d7f8fa69',
+		'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
+	}
+};
+try {
+	const response = await fetch(url, options);
+	const result = await response.json();
+  setResults(result.forecast.forecastday[0].day.mintemp_c);
+      setResults2(result.forecast.forecastday[0].day.maxtemp_c);
+      setCondition(result.current.condition);
+      setCurrent(result.current);
+      setCity(result.location.name);
+} catch (error) {
+}
+}
+
+    request();
 
   return(
     <View>

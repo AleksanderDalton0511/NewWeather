@@ -9,8 +9,11 @@ import { FlatList, ScrollView } from "react-native-web";
 import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-community/async-storage';
 import { storage } from "./components/storage";
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 
 export default function Gps() {
+
+  const navigation = useNavigation();
   
   /*const[city, setCity] = useState('');
   let margin = "20%";
@@ -104,6 +107,21 @@ async function req() {
     
     }, []);
 
+    const [ready, setReady] = useState();
+
+    useEffect(() => {
+      if(ready!=undefined){
+        storage.save({
+          key: 'tab', // Note: Do not use underscore("_") in key!
+          data: {
+            Name: {ready},
+          },
+          expires: null
+        })
+        navigation.navigate("Tab");
+      }
+      }, [ready]);
+
   return(
     <View>
 
@@ -130,13 +148,7 @@ async function req() {
       <DataTable.Row> 
       <FlatList 
          data={visualList}
-         renderItem={({item}) => <TouchableOpacity onPress={() => storage.save({
-          key: 'tab', // Note: Do not use underscore("_") in key!
-          data: {
-            Name: {item},
-          },
-          expires: null
-        })}><Text>{item.location}</Text></TouchableOpacity> }
+         renderItem={({item}) => <TouchableOpacity onPress={() => setReady(item)}><Text>{item.location}</Text></TouchableOpacity> }
          keyExtractor={(item) => item}
       />
       </DataTable.Row>

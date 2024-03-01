@@ -6,6 +6,7 @@ import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image } from 'reac
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'react-native-paper';
 import { ScrollView } from "react-native-web";
+import { storage } from "./components/storage";
 
 export default function Tab() {
   
@@ -38,7 +39,7 @@ NavigationBar.setBehaviorAsync("overlay-swipe");*/
 
   const [read, setRead] = useState(false);
 
-async function req() {
+/*async function req() {
   if(read!=true){
     const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + usePosition.coords.latitude+","+usePosition.coords.longitude + '&days=3';
       const options = {
@@ -58,78 +59,36 @@ async function req() {
       setRead(true);
   }
   }
-  req();
-
-    /*function handleBackButtonClick() {
-      setSelectedFalse();
-      return true;
-    }
-    
-    useEffect(() => {
-      BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
-      return () => {
-        BackHandler.removeEventListener("hardwareBackPress", handleBackButtonClick);
-      };
-    }, []);
-
-  const [selected, setSelected] = useState(false);
-  const [safer, setSafer] = useState(true);
+  req();*/
 
   useEffect(() => {
-    (async () => {
-      if(safer){
-      request2();
-      }
-      else{
-        setSelected(false);
-        setDaily(false);
-      }
-    })();
-  }, [trigger]);
+    storage
+      .load({
+        key: 'tab',
+        autsoSync: true,
+        syncInBackground: true,
+        syncParams: {
+          extraFetchOptions: {
+            // blahblah
+          },
+          someFlag: true
+        }
+      })
+      .then(ret => {
+        console.log(ret);
+      })
 
-  let word;
-  if (selected){
-    if (isDaily){
-      word = "TODAY";
-      margin = "90%";
-      }
-      else{
-        word = "DAILY";
-      }
-    try{
-      const locat = <Text style={{color: "red"}}>{results.location.name}</Text>
+      .catch(err => {
+        switch (err.name) {
+          case 'NotFoundError':
+            break;
+          case 'ExpiredError':
+            break;
+        }
+      });
+    
+    }, []);
 
-      function setSelectedFalse(){
-        setSelected(false);
-        setDaily(false);
-        setTrigger(false);
-      }
-
-      let data;
-      if(isDaily){
-        data = <DataTable style={{marginTop: "5%", backgroundColor: "#7B858D"}}>
-
-        <DataTable.Row>
-        <DataTable.Cell><Text style={{color: "white"}}>TODAY</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[0].day.avgtemp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[0].day.condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-      <DataTable.Row>
-      <DataTable.Cell><Text style={{color: "white"}}>TOMORROW</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[1].day.avgtemp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[1].day.condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-      <DataTable.Row>
-      <DataTable.Cell><Text style={{color: "white"}}>AFTERTOMORROW</Text></DataTable.Cell>
-        <DataTable.Cell><Text style={{color: "red"}}>{results.forecast.forecastday[2].day.avgtemp_c} C</Text></DataTable.Cell>
-        <Image source = {{uri:'https:' + results.forecast.forecastday[2].day.condition.icon, width: 45, height: 45}}/>
-      </DataTable.Row>
-
-        
-    </DataTable>
-      */
   return(
     <View>
 

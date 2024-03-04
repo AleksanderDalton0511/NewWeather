@@ -45,8 +45,28 @@ export default function Search() {
     
     }, []);
 
+    const [seeResult, setSeeResult] = useState();
+
+    const request = async () => {const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + input + '&days=3';
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': '3c9510ca70mshf8fe7463f988101p197cb5jsn5804d7f8fa69',
+		'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
+	}
+};
+try {
+	const response = await fetch(url, options);
+	const result = await response.json();
+  setSeeResult(result.location.name);
+} catch (error) {
+}
+}
+
   function Save(){
-    oldList.push(input);
+    request();
+    if(seeResult!=undefined){
+      oldList.push(input);
       storage.save({
         key: 'city', // Note: Do not use underscore("_") in key!
         data: {
@@ -54,6 +74,8 @@ export default function Search() {
         },
         expires: null
       });
+    };
+    //navigation.navigate("Gps");
   }
 
   return (

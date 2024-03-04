@@ -153,6 +153,8 @@ async function req() {
       />
       </DataTable.Row>
 
+      <TouchableOpacity onPress={() => navigation.navigate("Search")}><Text>Search</Text></TouchableOpacity>
+
       </DataTable> 
 
       </View>

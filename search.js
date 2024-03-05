@@ -65,7 +65,9 @@ try {
 
   function Save(){
     request();
-    console.log(seeResult);
+  }
+
+  useEffect(() => {
     if(seeResult!=undefined){
       oldList.push(seeResult);
       storage.save({
@@ -77,7 +79,7 @@ try {
       });
     };
     //navigation.navigate("Gps");
-  }
+    }, [seeResult]);
 
   return (
     <View>

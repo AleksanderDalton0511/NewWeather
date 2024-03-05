@@ -65,8 +65,9 @@ try {
 
   function Save(){
     request();
+    console.log(seeResult);
     if(seeResult!=undefined){
-      oldList.push(input);
+      oldList.push(seeResult);
       storage.save({
         key: 'city', // Note: Do not use underscore("_") in key!
         data: {

@@ -89,6 +89,8 @@ useEffect(() => {
     request();
   }
 
+  const [redirect, setRedirect] = useState("");
+
   useEffect(() => {
     if(seeResult!=undefined){
       oldList.push(seeResult);
@@ -100,8 +102,12 @@ useEffect(() => {
         expires: null
       });
     };
-    //navigation.navigate("Gps");
+    setRedirect(redirect+"a");
     }, [seeResult]);
+
+    if(redirect=="aa"){
+      navigation.navigate("Gps");
+    }
 
   return (
     <View>

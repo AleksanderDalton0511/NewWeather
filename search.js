@@ -123,7 +123,7 @@ useEffect(() => {
         }}
       />
       <TouchableOpacity onPress={Save}><Text>Save</Text></TouchableOpacity>
-      <Text>{searchResult}</Text>
+      <TouchableOpacity onPress={() => setInput(searchResult)}><Text>{searchResult}</Text></TouchableOpacity>
       </View>
   );
 }

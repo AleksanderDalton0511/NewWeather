@@ -2,10 +2,9 @@ import { BackHandler } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import * as NavigationBar from "expo-navigation-bar";
 import * as Location from 'expo-location';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image, FlatList } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'react-native-paper';
-import { FlatList, ScrollView } from "react-native-web";
 import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-community/async-storage';
 import { storage } from "./components/storage";
@@ -14,6 +13,8 @@ import { useNavigation, useIsFocused } from '@react-navigation/native';
 export default function Gps() {
 
   const navigation = useNavigation();
+
+  const isFocused = useIsFocused();
   
   /*const[city, setCity] = useState('');
   let margin = "20%";
@@ -105,7 +106,7 @@ async function req() {
         }
       });
     
-    }, []);
+    }, [isFocused]);
 
     const [ready, setReady] = useState();
 
@@ -145,13 +146,11 @@ async function req() {
         <DataTable.Cell><Text>MIN: {results}</Text></DataTable.Cell> 
       </DataTable.Row>
 
-      <DataTable.Row> 
       <FlatList 
          data={visualList}
          renderItem={({item}) => <TouchableOpacity onPress={() => setReady(item)}><Text>{item.location}</Text></TouchableOpacity> }
          keyExtractor={(item) => item}
       />
-      </DataTable.Row>
 
       <TouchableOpacity onPress={() => navigation.navigate("Search")}><Text>Search</Text></TouchableOpacity>
 

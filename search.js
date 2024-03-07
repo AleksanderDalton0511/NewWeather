@@ -11,9 +11,12 @@ import AsyncStorage from '@react-native-community/async-storage';
 import axios from 'axios';
 import searchCities from "./components/helper";
 import { storage } from "./components/storage";
+import { useNavigation } from '@react-navigation/native';
 
 export default function Search() {
   const [input, setInput] = useState("");
+
+  const navigation = useNavigation();
 
   const [oldList, setOldList] = useState([]);
 

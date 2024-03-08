@@ -2,37 +2,20 @@ import { BackHandler } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import * as NavigationBar from "expo-navigation-bar";
 import * as Location from 'expo-location';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image, FlatList, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'react-native-paper';
 import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-community/async-storage';
 import { storage } from "./components/storage";
 import { useNavigation, useIsFocused } from '@react-navigation/native';
+import { useSwipe } from "./components/useSwipe"
 
-export default function Gps() {
+export default function Gps(props) {
 
   const navigation = useNavigation();
 
   const isFocused = useIsFocused();
-  
-  /*const[city, setCity] = useState('');
-  let margin = "20%";
-const request = async () => {const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + city + '&days=3';
-const options = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': '3c9510ca70mshf8fe7463f988101p197cb5jsn5804d7f8fa69',
-		'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
-	}
-};
-try {
-	const response = await fetch(url, options);
-	const result = await response.json();
-  setResults(result);
-} catch (error) {
-}
-}*/
 
   const [results, setResults] = useState("");
   const [results2, setResults2] = useState("");
@@ -123,8 +106,18 @@ async function req() {
       }
       }, [ready]);
 
+      const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6)
+
+    function onSwipeLeft(){
+        console.log('SWIPE_LEFT')
+    }
+
+    function onSwipeRight(){
+        console.log('SWIPE_RIGHT')
+    }
+
   return(
-    <View>
+    <ScrollView onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
 
       <DataTable>
 
@@ -156,6 +149,6 @@ async function req() {
 
       </DataTable> 
 
-      </View>
+      </ScrollView>
   )
 }

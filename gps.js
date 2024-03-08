@@ -106,9 +106,9 @@ async function req() {
       }
       }, [ready]);
 
-      const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6)
+      const { onTouchStart, onTouchEnd } = useSwipe(onSwipeRight, 6)
 
-    function onSwipeLeft(){
+    function onSwipeRight(){
         setReady(visualList[0].location);
     }
 

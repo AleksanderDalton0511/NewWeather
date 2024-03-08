@@ -2,10 +2,9 @@ import { BackHandler } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import * as NavigationBar from "expo-navigation-bar";
 import * as Location from 'expo-location';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'react-native-paper';
-import { ScrollView } from "react-native-web";
 import { storage } from "./components/storage";
 
 export default function Tab() {
@@ -68,8 +67,61 @@ try {
 
     request();
 
+    const [currentIndex, setCurrentIndex] = useState();
+    const [newIndex, setNewIndex] = useState();
+
+    useEffect(() => {
+      storage
+        .load({
+          key: 'city',
+          autsoSync: true,
+          syncInBackground: true,
+          syncParams: {
+            extraFetchOptions: {
+              // blahblah
+            },
+            someFlag: true
+          }
+        })
+        .then(ret => {
+          console.log(ret.Name.oldList);
+          console.log(ret.Name.oldList.indexOf(city));
+          setCurrentIndex(ret.Name.oldList.indexOf(city));
+        })
+  
+        .catch(err => {
+          switch (err.name) {
+            case 'NotFoundError':
+              break;
+            case 'ExpiredError':
+              break;
+          }
+        });
+      
+      }, [city]);
+
+      const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6)
+
+    function onSwipeRight(){
+      setNewIndex(newIndex+1);
+      console.log(newIndex);
+    }
+
+      /*useEffect(() => {
+        if(ready!=undefined){
+          storage.save({
+            key: 'tab', // Note: Do not use underscore("_") in key!
+            data: {
+              Name: {ready},
+            },
+            expires: null
+          })
+          navigation.navigate("Tab");
+        }
+        }, [ready]);*/
+
   return(
-    <View>
+    <ScrollView onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
 
       <DataTable>
 
@@ -93,6 +145,6 @@ try {
 
       </DataTable> 
 
-      </View>
+      </ScrollView>
   )
 }

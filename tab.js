@@ -32,7 +32,7 @@ export default function Tab() {
         }
       })
       .then(ret => {
-        setLoc(ret.Name.ready.location);
+        setLoc(ret.Name.ready);
       })
 
       .catch(err => {

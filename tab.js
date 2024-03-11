@@ -6,6 +6,7 @@ import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image, ScrollView 
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'react-native-paper';
 import { storage } from "./components/storage";
+import { useSwipe } from "./components/useSwipe"
 
 export default function Tab() {
 
@@ -68,7 +69,7 @@ try {
     request();
 
     const [currentIndex, setCurrentIndex] = useState();
-    const [newIndex, setNewIndex] = useState();
+    const [newIndex, setNewIndex] = useState(0);
 
     useEffect(() => {
       storage
@@ -84,8 +85,8 @@ try {
           }
         })
         .then(ret => {
-          console.log(ret.Name.oldList);
-          console.log(ret.Name.oldList.indexOf(city));
+          //console.log(ret.Name.oldList);
+          //console.log(ret.Name.oldList.indexOf(city));
           setCurrentIndex(ret.Name.oldList.indexOf(city));
         })
   
@@ -100,9 +101,9 @@ try {
       
       }, [city]);
 
-      const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6)
+      const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, 6)
 
-    function onSwipeRight(){
+    function onSwipeLeft(){
       setNewIndex(newIndex+1);
       console.log(newIndex);
     }

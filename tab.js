@@ -46,7 +46,8 @@ export default function Tab() {
     
     }, []);
 
-const request = async () => {const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + loc + '&days=3';
+    useEffect(() => {
+      const req = async () => {const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + 'busan' + '&days=3';
 const options = {
 	method: 'GET',
 	headers: {
@@ -65,11 +66,34 @@ try {
 } catch (error) {
 }
 }
+req();
+      }, []);
 
-    request();
+/*const request = async () => {const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + loc + '&days=3';
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': '3c9510ca70mshf8fe7463f988101p197cb5jsn5804d7f8fa69',
+		'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
+	}
+};
+try {
+	const response = await fetch(url, options);
+	const result = await response.json();
+  setResults(result.forecast.forecastday[0].day.mintemp_c);
+      setResults2(result.forecast.forecastday[0].day.maxtemp_c);
+      setCondition(result.current.condition);
+      setCurrent(result.current);
+      setCity(result.location.name);
+} catch (error) {
+}
+}*/
+
 
     const [currentIndex, setCurrentIndex] = useState();
     const [newIndex, setNewIndex] = useState(0);
+
+    const [visualList, setVisualList] = useState();
 
     useEffect(() => {
       storage
@@ -85,9 +109,8 @@ try {
           }
         })
         .then(ret => {
-          //console.log(ret.Name.oldList);
-          //console.log(ret.Name.oldList.indexOf(city));
           setCurrentIndex(ret.Name.oldList.indexOf(city));
+          setVisualList(ret.Name.oldList);
         })
   
         .catch(err => {
@@ -101,15 +124,17 @@ try {
       
       }, [city]);
 
-      const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, 6)
+      const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, 6);
+
+      const [ready, setReady] = useState();
 
     function onSwipeLeft(){
       setNewIndex(newIndex+1);
-      console.log(newIndex);
+      setReady(visualList[newIndex]);
     }
 
-      /*useEffect(() => {
-        if(ready!=undefined){
+      useEffect(() => {
+        if(newIndex>0){
           storage.save({
             key: 'tab', // Note: Do not use underscore("_") in key!
             data: {
@@ -117,9 +142,8 @@ try {
             },
             expires: null
           })
-          navigation.navigate("Tab");
         }
-        }, [ready]);*/
+        }, [newIndex]);
 
   return(
     <ScrollView onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>

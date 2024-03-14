@@ -10,6 +10,8 @@ import { useSwipe } from "./components/useSwipe"
 
 export default function Tab() {
 
+  const [trigger, setTrigger] = useState(0);
+
   const [results, setResults] = useState("");
   const [results2, setResults2] = useState("");
   const [condition, setCondition] = useState("");
@@ -33,6 +35,7 @@ export default function Tab() {
       })
       .then(ret => {
         setLoc(ret.Name.ready);
+        console.log(ret);
       })
 
       .catch(err => {
@@ -44,7 +47,7 @@ export default function Tab() {
         }
       });
     
-    }, []);
+    }, [trigger]);
 
     useEffect(() => {
       const req = async () => {const url = 'https://weatherapi-com.p.rapidapi.com/forecast.json?q=' + loc + '&days=3';
@@ -71,7 +74,6 @@ try {
       }, [loc]);
 
     const [currentIndex, setCurrentIndex] = useState();
-    const [newIndex, setNewIndex] = useState(0);
 
     const [visualList, setVisualList] = useState();
 
@@ -109,13 +111,14 @@ try {
       const [ready, setReady] = useState();
 
     function onSwipeLeft(){
-      setNewIndex(newIndex+1);
-      setReady(visualList[newIndex]);
+      setCurrentIndex(currentIndex+1);
+      setReady(visualList[currentIndex]);
+      console.log(currentIndex);
       console.log(ready);
     }
 
-      /*useEffect(() => {
-        if(newIndex>0){
+      useEffect(() => {
+        if(currentIndex>0){
           storage.save({
             key: 'tab', // Note: Do not use underscore("_") in key!
             data: {
@@ -124,7 +127,8 @@ try {
             expires: null
           })
         }
-        }, [newIndex]);*/
+        setTrigger(trigger+1);
+        }, [currentIndex]);
 
   return(
     <ScrollView onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>

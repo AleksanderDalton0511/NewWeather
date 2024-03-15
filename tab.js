@@ -35,7 +35,6 @@ export default function Tab() {
       })
       .then(ret => {
         setLoc(ret.Name.ready);
-        console.log(ret);
       })
 
       .catch(err => {
@@ -106,19 +105,23 @@ try {
       
       }, [city]);
 
-      const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, 6);
+      const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6);
 
       const [ready, setReady] = useState();
 
     function onSwipeLeft(){
       setCurrentIndex(currentIndex+1);
       setReady(visualList[currentIndex]);
-      console.log(currentIndex);
-      console.log(ready);
+
+    }
+
+    function onSwipeRight(){
+      setCurrentIndex(currentIndex-1);
+      setReady(visualList[currentIndex]);
     }
 
       useEffect(() => {
-        if(currentIndex>0){
+        if(trigger>0){
           storage.save({
             key: 'tab', // Note: Do not use underscore("_") in key!
             data: {

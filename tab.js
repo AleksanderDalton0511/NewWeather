@@ -6,9 +6,12 @@ import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image, ScrollView 
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'react-native-paper';
 import { storage } from "./components/storage";
-import { useSwipe } from "./components/useSwipe"
+import { useSwipe } from "./components/useSwipe";
+import { useNavigation } from '@react-navigation/native';
 
 export default function Tab() {
+
+  const navigation = useNavigation();
 
   const [trigger, setTrigger] = useState(0);
 
@@ -110,13 +113,23 @@ try {
       const [ready, setReady] = useState();
 
     function onSwipeLeft(){
-      setCurrentIndex(currentIndex+1);
-      setReady(visualList[currentIndex+1]);
+      if(currentIndex+1===visualList.length){
+        console.log("stop");
+      }
+      else{
+        setCurrentIndex(currentIndex+1);
+        setReady(visualList[currentIndex+1]);
+      }
     }
 
     function onSwipeRight(){
+      if(currentIndex-1<0){
+        navigation.navigate("Gps");
+      }
+      else{
       setCurrentIndex(currentIndex-1);
       setReady(visualList[currentIndex-1]);
+      }
     }
 
       useEffect(() => {

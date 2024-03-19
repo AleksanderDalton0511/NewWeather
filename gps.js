@@ -62,6 +62,7 @@ async function req() {
   req();
 
   const [visualList, setVisualList] = useState();
+  const [ready, setReady] = useState();
 
   useEffect(() => {
     storage
@@ -78,6 +79,7 @@ async function req() {
       })
       .then(ret => {
         setVisualList(ret.Name.oldList.map(person => ({ location: person })));
+        setReady();
       })
 
       .catch(err => {
@@ -89,9 +91,7 @@ async function req() {
         }
       });
     
-    }, [isFocused]);
-
-    const [ready, setReady] = useState();
+    }, [isFocused])
 
     useEffect(() => {
       if(ready!=undefined){

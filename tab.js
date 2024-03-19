@@ -111,13 +111,12 @@ try {
 
     function onSwipeLeft(){
       setCurrentIndex(currentIndex+1);
-      setReady(visualList[currentIndex]);
-
+      setReady(visualList[currentIndex+1]);
     }
 
     function onSwipeRight(){
       setCurrentIndex(currentIndex-1);
-      setReady(visualList[currentIndex]);
+      setReady(visualList[currentIndex-1]);
     }
 
       useEffect(() => {
@@ -131,7 +130,7 @@ try {
           })
         }
         setTrigger(trigger+1);
-        }, [currentIndex]);
+        }, [ready]);
 
   return(
     <ScrollView onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>

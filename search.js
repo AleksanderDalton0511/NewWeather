@@ -1,15 +1,5 @@
-import { BackHandler } from "react-native";
-import { StatusBar } from 'expo-status-bar';
-import * as NavigationBar from "expo-navigation-bar";
-import * as Location from 'expo-location';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { DataTable } from 'react-native-paper';
-import { ScrollView } from "react-native-web";
-import Storage from 'react-native-storage';
-import AsyncStorage from '@react-native-community/async-storage';
-import axios from 'axios';
-import searchCities from "./components/helper";
 import { storage } from "./components/storage";
 import { useNavigation } from '@react-navigation/native';
 

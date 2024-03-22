@@ -1,15 +1,10 @@
-import { BackHandler } from "react-native";
-import { StatusBar } from 'expo-status-bar';
-import * as NavigationBar from "expo-navigation-bar";
 import * as Location from 'expo-location';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image, FlatList, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'react-native-paper';
-import Storage from 'react-native-storage';
-import AsyncStorage from '@react-native-community/async-storage';
 import { storage } from "./components/storage";
 import { useNavigation, useIsFocused } from '@react-navigation/native';
-import { useSwipe } from "./components/useSwipe"
+import { useSwipe } from "./components/useSwipe";
 
 export default function Gps(props) {
 
@@ -106,11 +101,15 @@ async function req() {
       }
       }, [ready]);
 
-      const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, 6)
+      const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6)
 
     function onSwipeLeft(){
         setReady(visualList[0].location);
     }
+
+    function onSwipeRight(){
+      console.log("helper");
+  }
 
   return(
     <ScrollView onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>

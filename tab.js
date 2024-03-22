@@ -1,7 +1,3 @@
-import { BackHandler } from "react-native";
-import { StatusBar } from 'expo-status-bar';
-import * as NavigationBar from "expo-navigation-bar";
-import * as Location from 'expo-location';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'react-native-paper';

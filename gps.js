@@ -112,41 +112,24 @@ async function req() {
   }
 
   return(
-    <View onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} style={{alignContent: "center"}}>
-      <Text style={{position: "fixed", top:0}}>test</Text>
-    <ScrollView style={{backgroundColor: "grey", width: "90%"}}>
+    <View onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} style={{alignItems: "center"}}>
+
+      <Text>{city}</Text>
+      <Text>{current.temp_c}°</Text>
+      <Text>{condition.text}</Text>
+      <Image source = {{uri:'https:' + condition.icon, width: 45, height: 45}}/>
+
+    <ScrollView style={{backgroundColor: "grey", width: "80%"}}>
 
       <DataTable>
-
-      <DataTable.Row> 
-        <DataTable.Cell><Text>{city}</Text></DataTable.Cell> 
-      </DataTable.Row>
-
-      <DataTable.Row> 
-        <DataTable.Cell><Text>{current.temp_c}°</Text></DataTable.Cell> 
-      </DataTable.Row>
-      
-      <DataTable.Row> 
-        <DataTable.Cell><Text>{condition.text}</Text></DataTable.Cell> 
-        <DataTable.Cell><Image source = {{uri:'https:' + condition.icon, width: 45, height: 45}}/></DataTable.Cell> 
-      </DataTable.Row>
-
       <DataTable.Row> 
         <DataTable.Cell><Text>MAX: {results2}</Text></DataTable.Cell> 
         <DataTable.Cell><Text>MIN: {results}</Text></DataTable.Cell> 
       </DataTable.Row>
-
-      <FlatList 
-         data={visualList}
-         renderItem={({item}) => <TouchableOpacity onPress={() => setReady(item.location)}><Text>{item.location}</Text></TouchableOpacity> }
-         keyExtractor={(item) => item}
-      />
-
       <TouchableOpacity onPress={() => navigation.navigate("Search")}><Text>Search</Text></TouchableOpacity>
-
       </DataTable> 
 
-      <ScrollView horizontal={true}>
+      <ScrollView style={{backgroundColor: "blue", paddingBottom: "15%"}} horizontal={true}>
         <Text>a       </Text>
         <Text>a       </Text>
         <Text>a       </Text>
@@ -166,20 +149,28 @@ async function req() {
         <Text>a       </Text>
         <Text>a       </Text>
         <Text>a       </Text>
+      </ScrollView>
+
+      <Text style={{paddingBottom: "20%"}}>a</Text>
+      <Text style={{paddingBottom: "20%"}}>a</Text>
+      <Text style={{paddingBottom: "20%"}}>a</Text>
+      <Text style={{paddingBottom: "20%"}}>a</Text>
+      <Text style={{paddingBottom: "20%"}}>a</Text>
+      <Text style={{paddingBottom: "20%"}}>a</Text>
+      <Text style={{paddingBottom: "20%"}}>a</Text>
+      <Text style={{paddingBottom: "20%"}}>a</Text>
+      <Text style={{paddingBottom: "20%"}}>a</Text>
+      <Text style={{paddingBottom: "20%"}}>a</Text>
+      <Text style={{paddingBottom: "20%"}}>a</Text>
         
       </ScrollView>
 
-      <Text  style={{paddingBottom: "20%"}}>a       </Text>
-      <Text  style={{paddingBottom: "20%"}}>a       </Text>
-      <Text  style={{paddingBottom: "20%"}}>a       </Text>
-      <Text style={{paddingBottom: "20%"}}>a       </Text>
-      <Text style={{paddingBottom: "20%"}}>a       </Text>
-      <Text style={{paddingBottom: "20%"}}>a       </Text>
-      <Text style={{paddingBottom: "20%"}}>a       </Text>
-      <Text style={{paddingBottom: "20%"}}>a       </Text>
-      <Text style={{paddingBottom: "20%"}}>a       </Text>
+        <FlatList 
+          data={visualList}
+          renderItem={({item}) => <TouchableOpacity onPress={() => setReady(item.location)}><Text>{item.location}</Text></TouchableOpacity> }
+          keyExtractor={(item) => item}
+        />
 
-      </ScrollView>
       </View>
   )
 }

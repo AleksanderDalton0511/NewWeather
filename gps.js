@@ -112,7 +112,9 @@ async function req() {
   }
 
   return(
-    <ScrollView onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+    <View onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} style={{alignContent: "center"}}>
+      <Text style={{position: "fixed", top:0}}>test</Text>
+    <ScrollView style={{backgroundColor: "grey", width: "90%"}}>
 
       <DataTable>
 
@@ -136,7 +138,7 @@ async function req() {
 
       <FlatList 
          data={visualList}
-         renderItem={({item}) => <TouchableOpacity onPress={() => setReady(item)}><Text>{item.location}</Text></TouchableOpacity> }
+         renderItem={({item}) => <TouchableOpacity onPress={() => setReady(item.location)}><Text>{item.location}</Text></TouchableOpacity> }
          keyExtractor={(item) => item}
       />
 
@@ -144,6 +146,40 @@ async function req() {
 
       </DataTable> 
 
+      <ScrollView horizontal={true}>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        <Text>a       </Text>
+        
       </ScrollView>
+
+      <Text  style={{paddingBottom: "20%"}}>a       </Text>
+      <Text  style={{paddingBottom: "20%"}}>a       </Text>
+      <Text  style={{paddingBottom: "20%"}}>a       </Text>
+      <Text style={{paddingBottom: "20%"}}>a       </Text>
+      <Text style={{paddingBottom: "20%"}}>a       </Text>
+      <Text style={{paddingBottom: "20%"}}>a       </Text>
+      <Text style={{paddingBottom: "20%"}}>a       </Text>
+      <Text style={{paddingBottom: "20%"}}>a       </Text>
+      <Text style={{paddingBottom: "20%"}}>a       </Text>
+
+      </ScrollView>
+      </View>
   )
 }

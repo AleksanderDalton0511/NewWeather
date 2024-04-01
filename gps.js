@@ -114,6 +114,7 @@ async function req() {
   return(
     <View onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} style={{alignItems: "center"}}>
 
+<TouchableOpacity onPress={() => navigation.navigate("Search")}><Text>Search</Text></TouchableOpacity> 
       <Text>{city}</Text>
       <Text>{current.temp_c}°</Text>
       <Text>{condition.text}</Text>
@@ -126,7 +127,6 @@ async function req() {
         <DataTable.Cell><Text>MAX: {results2}</Text></DataTable.Cell> 
         <DataTable.Cell><Text>MIN: {results}</Text></DataTable.Cell> 
       </DataTable.Row>
-      <TouchableOpacity onPress={() => navigation.navigate("Search")}><Text>Search</Text></TouchableOpacity>
       </DataTable> 
 
       <ScrollView style={{backgroundColor: "blue", paddingBottom: "15%"}} horizontal={true}>

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, FlatList } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { storage } from "./components/storage";
 import { useNavigation } from '@react-navigation/native';
@@ -11,6 +11,8 @@ export default function Search() {
   const [oldList, setOldList] = useState([]);
 
   const [searchResult, setSearchResult] = useState("");
+
+  const [visualList, setVisualList] = useState("");
 
   useEffect(() => {
     storage
@@ -27,6 +29,7 @@ export default function Search() {
       })
       .then(ret => {
         setOldList(ret.Name.oldList);
+        setVisualList(ret.Name.oldList.map(person => ({ location: person })));
       })
 
       .catch(err => {
@@ -102,6 +105,23 @@ useEffect(() => {
       navigation.navigate("Gps");
     }
 
+    const [sliced, setSliced] = useState(-1);
+
+useEffect(() => {
+  setSliced(sliced+1);
+}, [visualList]);
+
+ if(sliced>1){
+    setOldList(visualList);
+  storage.save({
+    key: 'city', // Note: Do not use underscore("_") in key!
+    data: {
+      Data: {oldList}
+    },
+    expires: null
+  });
+}
+
   return (
     <View>
       <TextInput
@@ -117,6 +137,13 @@ useEffect(() => {
       />
       <TouchableOpacity onPress={Save}><Text>Save</Text></TouchableOpacity>
       <TouchableOpacity onPress={() => setInput(searchResult)}><Text>{searchResult}</Text></TouchableOpacity>
+      
+      <FlatList 
+          data={visualList}
+          renderItem={({item}) => <TouchableOpacity style={{flexDirection: "row"}}><Text>{item.location}</Text><TouchableOpacity onPress={() => setVisualList(visualList.slice(0, visualList.indexOf(item)).concat(visualList.slice(visualList.indexOf(item)+1)))} style={{backgroundColor: "red"}}><Text>delete</Text></TouchableOpacity></TouchableOpacity> }
+          keyExtractor={(item) => item}
+      />
+      
       </View>
   );
 }

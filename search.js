@@ -122,6 +122,21 @@ useEffect(() => {
   });
 }
 
+const [ready, setReady] = useState();
+
+useEffect(() => {
+  if(ready!=undefined){
+    storage.save({
+      key: 'tab', // Note: Do not use underscore("_") in key!
+      data: {
+        Name: {ready},
+      },
+      expires: null
+    })
+    navigation.navigate("Tab");
+  }
+  }, [ready]);
+
   return (
     <View>
       <TextInput
@@ -136,6 +151,7 @@ useEffect(() => {
         }}
       />
       <TouchableOpacity onPress={Save}><Text>Save</Text></TouchableOpacity>
+      <TouchableOpacity onPress={() => setReady(searchResult)}><Text>Enter</Text></TouchableOpacity>
       <TouchableOpacity onPress={() => setInput(searchResult)}><Text>{searchResult}</Text></TouchableOpacity>
       
       <FlatList 
